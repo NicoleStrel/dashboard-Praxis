@@ -1,0 +1,14 @@
+#root {
+  display: block;
+  min-height: 100vh;
+}
+
+.patient-card{
+  background-color: #EDEDED;
+  margin: 50px;
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.sample-data{
+}

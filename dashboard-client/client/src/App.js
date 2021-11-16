@@ -1,5 +1,5 @@
 import React from 'react'
-import './App.css';
+import './css/App.css';
 import axios from 'axios'
 
 export default class Dashboard extends React.Component {
@@ -25,12 +25,11 @@ export default class Dashboard extends React.Component {
   render() {
     return (
       <div>
-          <p> Welcome to the dashboard - testing testing :) </p>
           <div>
               {this.state.data.map((d) => {
               return (
-                <div>
-                  <div>Data -- {d}</div>
+                <div class="patient-card">
+                  <div class="sample-data">Data -- {d}</div>
                   <br></br>
                 </div>
                 );
