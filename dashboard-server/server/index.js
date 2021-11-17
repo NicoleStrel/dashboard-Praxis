@@ -29,7 +29,7 @@ app.post('/', (req, res) => {
         }
         data_list= data.split('\n')
 
-        /*
+        
         //now, get the next patient in line form patientAndSampleData.txt:
         fs.readFile(patientAndSampleDataFile, 'utf8' , (err, data) => {
             if (err) {
@@ -44,12 +44,13 @@ app.post('/', (req, res) => {
 
             //remove first line
             var linesExceptFirst = dataList.slice(1).join('\n');
-            fs.writeFile(patientAndSampleDataFile, linesExceptFirst);
-
-            return first_line
-        });
-        */
-
+            fs.writeFile(patientAndSampleDataFile, linesExceptFirst, 'utf8', function(err) {
+                if (err) throw err;
+            });
+        })
+        
+        //combine both lists 
+        
         res.send(data_list)
     });
 });
