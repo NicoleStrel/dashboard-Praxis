@@ -20,6 +20,7 @@ app.post('/', (req, res) => {
     patientAndSampleDataFile = './patientAndSampleData.txt'
 
     current_patientData =[]
+    final_data=[];
 
     //Read from data file
     fs.readFile(machineDataFile, 'utf8' , (err, data) => {
@@ -27,30 +28,38 @@ app.post('/', (req, res) => {
           console.error(err)
           return
         }
-        data_list= data.split('\n')
-
+        current_machine_data= data.split('\n');
+        l=current_machine_data.length;
+        final_data=[]
         
-        //now, get the next patient in line form patientAndSampleData.txt:
+        //now, get the patients to match the data
         fs.readFile(patientAndSampleDataFile, 'utf8' , (err, data) => {
             if (err) {
                 console.error(err)
                 return
             }
-            
-            //first line
             dataList = data.split('\n')
-            first_line = dataList[0]
-            current_patientData.push(first_line)
+            current_patientData=dataList.slice(0,l)
 
-            //remove first line
-            var linesExceptFirst = dataList.slice(1).join('\n');
-            fs.writeFile(patientAndSampleDataFile, linesExceptFirst, 'utf8', function(err) {
-                if (err) throw err;
-            });
+            //combine lists
+            if (current_patientData.length > 0){
+                for (let i = 0; i < l; i++) {
+                    p=current_patientData[i].split('   ')
+                    final_data.push({
+                        "patient": p[0],
+                        "sample": p[1],
+                        "machine": current_machine_data[i],
+                    });
+                }
+                //console.log("final, ", final_data)
+                console.log("final", final_data)
+                res.send(final_data)
+            }
+            //res.send(final_data)
+
         })
         
-        //combine both lists 
+        //res.send([{ patient: 'Patient O', sample: 'Sample983', machine: 'hi1' }])
         
-        res.send(data_list)
     });
 });

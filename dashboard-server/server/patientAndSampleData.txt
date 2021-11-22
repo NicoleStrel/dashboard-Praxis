@@ -1,0 +1,13 @@
+Patient O   Sample983
+Patient M   Sample192
+Patient E   Sample234
+Patient G   Sample234
+Patient Y   Sample927
+Patient L   Sample123
+Patient N   Sample998
+Patient P   Sample123
+Patient C   Sample902
+Patient X   Sample777
+Patient R   Sample202
+Patient S   Sample393
+Patient G   Sample561
