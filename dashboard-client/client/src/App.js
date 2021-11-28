@@ -1,34 +1,79 @@
 import React from 'react'
 import './css/App.css';
 import axios from 'axios';
+
+//popup
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 
+//slider
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
+
+//spinner/checkmark
+import Spinner from 'react-bootstrap/Spinner';
+import { Checkmark } from 'react-checkmark';
+
 export default class Dashboard extends React.Component {
-  state = {
-    data: []
+  constructor(props) {
+    super(props);
+    this.state = { 
+      data: [],
+      performance_getData: []
+    };
   }
 
   getData() {
+    var start = performance.now();
+
     axios.post('http://localhost:8000/', '')
     .then((response ) => {
-      this.setState({data : response.data});
+      let data=response.data.map((d, i) =>{
+        let time = this.state.data.length > 0 ? this.state.data[i].currtime: 0;
+        return {...d, currtime: time};
+      })
+      this.setState({data: data});
     })
+    var end = performance.now();
+    
+    // record performance test
+    var p = this.state.performance_getData;
+    p.push(end - start);
+    this.setState({ performance_getData: p});
+    console.log ("pref : ", p)
+    if (p.length === 100) {
+      console.log("Performance getData() over 100 trials: ", p.reduce((a, b) => a + b, 0)/100)
+    }
   }
 
   componentDidMount() {
     this.interval = setInterval(() => this.getData(), 1000);
+    this.timer = setInterval(() => this.setCurrentTime(), 1000);
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
+    clearInterval(this.timer);
+  }
+
+  setCurrentTime() {
+    var data = this.state.data;
+    data.forEach(d => {
+      if (d.start === "1"){
+        d.currtime = d.currtime + 1;
+      }
+    });
+
+    this.setState({data: data});
   }
 
   render() {
+    const hasData = this.state.data.length >0;
     return (
       <div>
           <div>
-              {this.state.data.map((d) => {
+              {hasData ? (
+              this.state.data.map((d, i) => {
               return (
                 <div class="patient-card">
                   <div class="sample-patient">
@@ -42,10 +87,33 @@ export default class Dashboard extends React.Component {
                   <br></br>
                   <div class="sample-machine">{d.machine}</div>
                   <br></br>
-                  <div class="slider">Slider</div>
+                  <div class="slider">
+                      {d.time === "0" ? (
+                        <Slider
+                        value={100}
+                        trackStyle={{ backgroundColor: '#50DCC3', height: 30, transform: 'translateY(-25%)' }} 
+                        railStyle={{backgroundColor: '#ffffff'}}
+                        handleStyle={{ display: 'none' }}/>
+                      ) : (
+                        <Slider 
+                          max={d.time} 
+                          value={d.currtime} 
+                          trackStyle={{ backgroundColor: '#50DCC3', height: 30, transform: 'translateY(-25%)' }} 
+                          railStyle={{backgroundColor: '#ffffff'}}
+                          handleStyle={{ display: 'none' }}/>
+                      )}
+                  </div>
+                  <div className="state">
+                    {d.currtime >= d.time ? (
+                      <Checkmark size='32px' color='#50DCC3'/>
+                    ) : (
+                      <Spinner animation="border" role="status" style={{color: '#50DCC3'}}></Spinner>
+                    )}
+                  </div>
                 </div>
-                );
-            })}
+                )} 
+               ) ) : ( <div class="no-data">There are no samples being processed currently</div>)
+              }
           </div>
       </div>
     )

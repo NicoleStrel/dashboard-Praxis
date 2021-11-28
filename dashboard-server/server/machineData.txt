@@ -1,9 +1,13 @@
-hi1
-hi2
-hi3
-hi5
-hi666
-dwgfhdf
-4
-njn
-dywhfvdyh
+MachineX    34    1
+MachineY    10    0
+MachineZ    20    1
+MachineK    23    1
+MachineL    34    0
+MachineO    11    0
+MachineP    30    0
+MachineZ    70    0
+MachineU    60    0
+MachineM    4    0
+MachineQ    100    0
+MachineG    125    0
+Machine2    1    0

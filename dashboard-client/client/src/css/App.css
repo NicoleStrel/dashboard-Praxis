@@ -56,3 +56,15 @@
   font-weight:bold;
   max-width: 250px;
 }
+
+.no-data{
+  text-align:center;
+  margin-top: 50px;
+}
+
+.patient-card > .state{
+  margin:0;
+  text-align: left;
+  width:0;
+  flex: 0.05 1 auto;
+}

@@ -42,24 +42,21 @@ app.post('/', (req, res) => {
             current_patientData=dataList.slice(0,l)
 
             //combine lists
-            if (current_patientData.length > 0){
+            if (current_patientData.length > 0 && (current_machine_data.length >0 && current_machine_data[0]!='')){
                 for (let i = 0; i < l; i++) {
                     p=current_patientData[i].split('   ')
+                    m=current_machine_data[i].split('    ')
                     final_data.push({
                         "patient": p[0],
                         "sample": p[1],
-                        "machine": current_machine_data[i],
+                        "machine": m[0],
+                        "time": m[1],
+                        "start": m[2],
                     });
                 }
-                //console.log("final, ", final_data)
                 console.log("final", final_data)
-                res.send(final_data)
             }
-            //res.send(final_data)
-
+            res.send(final_data)
         })
-        
-        //res.send([{ patient: 'Patient O', sample: 'Sample983', machine: 'hi1' }])
-        
     });
 });
