@@ -1,6 +1,6 @@
 MachineX    34    1
-MachineY    10    0
-MachineZ    20    1
+MachineY    10    1
+MachineZ    0    1
 MachineK    23    1
 MachineL    34    0
 MachineO    11    0

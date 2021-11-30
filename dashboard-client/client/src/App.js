@@ -40,7 +40,6 @@ export default class Dashboard extends React.Component {
     var p = this.state.performance_getData;
     p.push(end - start);
     this.setState({ performance_getData: p});
-    console.log ("pref : ", p)
     if (p.length === 100) {
       console.log("Performance getData() over 100 trials: ", p.reduce((a, b) => a + b, 0)/100)
     }
@@ -67,8 +66,19 @@ export default class Dashboard extends React.Component {
     this.setState({data: data});
   }
 
+  getMarks(max) {
+    var marks = {};
+    marks[0] = '0%';
+    marks[max/4] = '25%';
+    marks[max/2] = '50%';
+    marks[3*max/4] = '75%';
+    marks[max] = '100%';
+    return marks
+  }
+
   render() {
     const hasData = this.state.data.length >0;
+   
     return (
       <div>
           <div>
@@ -93,14 +103,19 @@ export default class Dashboard extends React.Component {
                         value={100}
                         trackStyle={{ backgroundColor: '#50DCC3', height: 30, transform: 'translateY(-25%)' }} 
                         railStyle={{backgroundColor: '#ffffff'}}
+                        marks ={{0:'0%', 25: '25%', 50:"50%", 75:"75%", 100:"100%"}}
+                        dotStyle={{ display: 'none' }}
                         handleStyle={{ display: 'none' }}/>
+                        
                       ) : (
                         <Slider 
                           max={d.time} 
                           value={d.currtime} 
+                          marks ={this.getMarks(parseInt(d.time))}
                           trackStyle={{ backgroundColor: '#50DCC3', height: 30, transform: 'translateY(-25%)' }} 
                           railStyle={{backgroundColor: '#ffffff'}}
-                          handleStyle={{ display: 'none' }}/>
+                          handleStyle={{ display: 'none' }}
+                          dotStyle={{ display: 'none' }}/>
                       )}
                   </div>
                   <div className="state">

@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 app.use(cors())
 const fs = require('fs')
+const SerialPort = require('serialport')
 
 
 app.get('/', (req, res) => {
@@ -21,6 +22,19 @@ app.post('/', (req, res) => {
 
     current_patientData =[]
     final_data=[];
+
+    // read from sensor
+    const RaspberryPi = new SerialPort('/dev/tty.usbmodem14201', {
+        baudRate: 115200 
+    })
+
+    RaspberryPi.on('data', (err, data) => {
+        if (err) {
+            console.error(err)
+            return
+        }
+        console.log("eyoooo -->", Boolean(data))
+    })
 
     //Read from data file
     fs.readFile(machineDataFile, 'utf8' , (err, data) => {
@@ -54,7 +68,7 @@ app.post('/', (req, res) => {
                         "start": m[2],
                     });
                 }
-                console.log("final", final_data)
+                //console.log("final", final_data)
             }
             res.send(final_data)
         })
