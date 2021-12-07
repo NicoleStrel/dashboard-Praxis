@@ -1,5 +1,9 @@
-# Dashboard-Praxis
+# Live Automatic Dashboard 
+ESC204: Praxis III, Team 104D
+ 
+![image](https://drive.google.com/uc?export=view&id=1g_u6uexO8rXJqiKDBPT9tLLi_IGUeQYs)
 
+# 
 To run the dashboard locally, follow the steps below for both server and client
 
 ### Server
