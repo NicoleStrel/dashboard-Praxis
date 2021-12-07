@@ -1,12 +1,22 @@
 //See 'list_serial.js' first.
 
 const SerialPort = require('serialport')
-const RaspberryPi = new SerialPort('/dev/tty.usbmodem14101', {
+const RaspberryPi = new SerialPort('/dev/tty.usbmodem14201', { //Note: Not "usbmodemXXX".
   baudRate: 115200 //115200 is the default baud rate of Raspberry Pi Pico.
 })
 
-RaspberryPi.on('data', function(data) {
-  console.log(Boolean(data)) //You can then use 'Boolean(data)' in other functions.
+RaspberryPi.on('data', (data, err) => { //The order of 'data' and 'err' matters!
+  if (err) {
+    console.error(err)
+    return
+  }
+  if (data) {
+    console.log('Input:')
+    for (const value of data.values()) {
+      console.log(Boolean(value)) //You can call other functions here.
+    }
+    console.log('')
+  }
 })
 
 //Note: Raspberry Pi will send a byte of information whenever it detects a state change in the infrared sensor.
